@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { userActions, dataActions } from '../_actions';
 import  MyTable from '../_components/Mytable';
+import  MyChart from '../_components/chart';
 
 class HomePage extends React.Component {
     componentDidMount() {
@@ -28,6 +29,7 @@ class HomePage extends React.Component {
             <div className="col-md-6 col-md-offset-3">
                 <h1>Hi {user.firstName}!</h1>
                 <p>You're logged in with React!!</p>
+                <MyChart data= {data.products}/>
                 <MyTable products= {data.products}/>
                 <p>
                     <Link to="/login">Logout</Link>
