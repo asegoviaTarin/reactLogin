@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { userActions } from '../_actions';
-import { Table } from '../_components/Table';
+import { userActions, dataActions } from '../_actions';
+import  MyTable from '../_components/Mytable';
 
 class HomePage extends React.Component {
     componentDidMount() {
+        this.props.dispatch(dataActions.getData());
         this.props.dispatch(userActions.getAll());
     }
 
@@ -15,32 +16,23 @@ class HomePage extends React.Component {
     }
 
     render() {
-        const { user, users } = this.props;
+        if(!this.props.data.products || !this.props.data.products[0] ){
+            console.log('NO HAY PROPS',this.props)
+            return null
+        }
+        console.log('SI props',this.props)
+        
+        const { user, users, data } = this.props;
+        console.log('LOS PRODUCTOS CUANDO SE PASAN:', data.products )
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h1>Hi {user.firstName}!</h1>
                 <p>You're logged in with React!!</p>
-                <h3>All registered users:</h3>
-                {users.loading && <em>Loading users...</em>}
-                {users.error && <span className="text-danger">ERROR: {users.error}</span>}
-                {users.items &&
-                    <ul>
-                        {users.items.map((user, index) =>
-                            <li key={user.id}>
-                                {user.firstName + ' ' + user.lastName}
-                                {
-                                    user.deleting ? <em> - Deleting...</em>
-                                    : user.deleteError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
-                                    : <span> - <a onClick={this.handleDeleteUser(user.id)}>Delete</a></span>
-                                }
-                            </li>
-                        )}
-                    </ul>
-                }
+                <MyTable products= {data.products}/>
                 <p>
                     <Link to="/login">Logout</Link>
                 </p>
-                <Table/>
+                
             </div>
            
         );
@@ -48,11 +40,12 @@ class HomePage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { users, authentication } = state;
+    const { users, authentication, data} = state;
     const { user } = authentication;
     return {
         user,
-        users
+        users,
+        data
     };
 }
 

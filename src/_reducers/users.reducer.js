@@ -7,13 +7,16 @@ export function users(state = {}, action) {
         loading: true
       };
     case userConstants.GETALL_SUCCESS:
+    console.log('dentro del dispatcher users!!!!', action.users)
+
       return {
-        items: action.users
+        items: action.users,
       };
     case userConstants.GETALL_FAILURE:
       return { 
         error: action.error
       };
+
     case userConstants.DELETE_REQUEST:
       // add 'deleting:true' property to user being deleted
       return {

@@ -6,6 +6,7 @@ export const userService = {
     logout,
     register,
     getAll,
+    getData,
     getById,
     update,
     delete: _delete
@@ -45,6 +46,25 @@ function login(username, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+}
+
+function getData() {
+    const requestOptions = {
+        method: 'get',
+        url: 'http://localhost:8080/api/mockData',
+        headers: authHeader(),
+    };
+
+    return axios(requestOptions)
+      .then(response => {
+          console.log('respuesta2',response)
+          console.log('respuesta Stado2',response.status)
+          if (response.status !== 200) { 
+              return Promise.reject(response.statusText);
+          }
+          console.log('lo oque recupero del WS',response.data.body)
+          return response.data.body;
+      });
 }
 
 function getAll() {

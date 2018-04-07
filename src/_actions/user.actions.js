@@ -1,4 +1,5 @@
 import { userConstants } from '../_constants';
+import { dataConstants } from '../_constants';
 import { userService } from '../_services';
 import { alertActions } from './';
 import { history } from '../_helpers';
@@ -8,6 +9,7 @@ export const userActions = {
     logout,
     register,
     getAll,
+    getData,
     delete: _delete
 };
 
@@ -73,6 +75,26 @@ function getAll() {
     function request() { return { type: userConstants.GETALL_REQUEST } }
     function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
     function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+}
+function getData() {
+    return dispatch => {
+        dispatch(request());
+        userService.getData()
+        .then(data => {
+            console.log('<<<<<<<<<',data)
+            dispatch(success(data));
+            }
+        )
+        .catch(function (error) {
+            console.log('error en la respuesta')
+            dispatch(failure(error.response));
+        });
+      };
+
+
+    function request() { return { type: dataConstants.GETDATA_REQUEST } }
+    function success(data) { return { type: dataConstants.GETDATA_SUCCESS, data } }
+    function failure(error) { return { type: dataConstants.GETDATA_FAILURE, error } }
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
