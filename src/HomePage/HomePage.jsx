@@ -9,6 +9,7 @@ import  MyTable from '../_components/MyTable';
 class HomePage extends React.Component {
   componentDidMount() {
     this.props.dispatch(dataActions.getData());
+    this.props.dispatch(userActions.getCurrentUser());
   }
 
   handleDeleteUser(id) {
@@ -16,15 +17,16 @@ class HomePage extends React.Component {
   }
 
   render() {
-    if (!this.props.data.products || !this.props.data.products[0]) {
+    if (!this.props.users.items) {
+      <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
       return null;
     }
-    const { data } = this.props;
+    const { data, users } = this.props;
     return (
-      <div className="col-md-6 col-md-offset-3">
-        <h1>Hi!</h1>
+      <div className="col-md-8 col-md-offset-2">
+        <h1>Hi {users.items.user.username}</h1>
+         <p>UserId: {users.items.user._id}</p>
         {this.props.data.products && <div>
-          <p>You're logged in with React!!</p>
           <MyTable products={data.products}/>
         </div>
         }
@@ -38,10 +40,8 @@ class HomePage extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { users, authentication, data } = state;
-  const { user } = authentication;
+  const { users, data } = state;
   return {
-    user,
     users,
     data,
   };

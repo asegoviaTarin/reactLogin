@@ -1,16 +1,24 @@
-import { authHeader } from '../_helpers';
 import axios from 'axios';
+import { authHeader } from '../_helpers';
 
 export const userService = {
   login,
   getData,
-  logout
+  logout,
+  getCurrentUser,
 };
+
+function getCurrentUser() {
+  let token = localStorage.getItem('token');
+  let playload = JSON.parse(atob(token.split('.')[1]));
+  return playload;
+}
 
 function login(username, password) {
   const requestOptions = {
     method: 'post',
-    url: 'http://localhost:8080/api/login',
+    url: 'http://api.nextportfolio.local/v1/auth/token',
+    // url: 'http://localhost:8080/api/login',
     headers: { 'Content-Type': 'application/json' },
     data: JSON.stringify({ username, password }),
   };
@@ -21,13 +29,10 @@ function login(username, password) {
         return Promise.reject(response.statusText);
       }
 
-      const username = response.data.body;
-      const user = username;
-      if (user && user.token) {
-        localStorage.setItem('user', JSON.stringify(user));
-      }
-
-      return user;
+      //let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVhZWFkOTVlOTExMTkzMDAxMTgzMDE5NiIsInVzZXJuYW1lIjoic3VwZXJhZG1pbiJ9LCJzY29wZSI6eyJfaWQiOiI1YWVhZDk1ZjNmYmM1MTAwMTE2NzA3OWEiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJzY29wZSI6WyJzdXBlcmFkbWluIl19LCJpYXQiOjE1MjUzNDY4MjAsImV4cCI6MTUyNTQzMzIyMH0.-yz7ASNDKfmBg_8_b9NOZMumNZfefe7BYJV1M0iA8oE';
+      var { token } = response.data;
+      localStorage.setItem('token', token);
+      return token;
     });
 }
 
