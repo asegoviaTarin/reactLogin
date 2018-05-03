@@ -12,7 +12,6 @@ function getData() {
         dispatch(request());
         userService.getData()
         .then(data => {
-            console.log('<<<<<<<<<actions:',data)
             dispatch(success(data));
             }
         )

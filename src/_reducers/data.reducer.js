@@ -4,7 +4,6 @@ export function data(state = {}, action) {
   switch (action.type) {
 
     case dataConstants.GETDATA_SUCCESS:
-      console.log('dentro del dispatcher!!!!', action.data)
       return {
         products: action.data
       };

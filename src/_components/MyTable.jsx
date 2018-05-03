@@ -31,7 +31,7 @@ class MyTable extends Component {
       rows.push(<tr key={i} id={rowID}>{cell}</tr>)
     }
     return(
-       <BootstrapTable keyField='name' data={ this.props.products } columns={ this.columns } />
+      <BootstrapTable keyField='name' data={ this.props.products } columns={ this.columns } />
     )
   }
 }

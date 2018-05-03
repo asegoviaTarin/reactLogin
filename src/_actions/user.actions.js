@@ -81,7 +81,6 @@ function getData() {
         dispatch(request());
         userService.getData()
         .then(data => {
-            console.log('<<<<<<<<<',data)
             dispatch(success(data));
             }
         )
